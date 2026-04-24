@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../widgets/berber_desen.dart';
-import 'auth/login_screen.dart';
-import 'home/home_screen.dart';
+import 'auth/role_selection_screen.dart';
+import 'main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -36,7 +36,8 @@ class _SplashScreenState extends State<SplashScreen>
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => user != null ? const HomeScreen() : const LoginScreen(),
+        builder: (_) =>
+            user != null ? const MainScreen() : const RoleSelectionScreen(),
       ),
     );
   }
