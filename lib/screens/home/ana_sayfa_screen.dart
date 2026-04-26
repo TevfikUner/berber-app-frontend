@@ -25,20 +25,29 @@ class _AnaSayfaScreenState extends State<AnaSayfaScreen> {
   }
 
   Future<void> _yukle() async {
+    // Her API çağrısını ayrı try-catch'e alarak
+    // birinin hata vermesi diğerini engellemesin
+    Map<String, dynamic>? profil;
+    Map<String, dynamic>? istatistik;
+
     try {
-      final results = await Future.wait([
-        ApiService.profilGetir(),
-        ApiService.getIstatistik(),
-      ]);
-      if (mounted) {
-        setState(() {
-          _profil = results[0] as Map<String, dynamic>?;
-          _istatistik = results[1] as Map<String, dynamic>?;
-          _yukleniyor = false;
-        });
-      }
-    } catch (_) {
-      if (mounted) setState(() => _yukleniyor = false);
+      profil = await ApiService.profilGetir();
+    } catch (e) {
+      debugPrint('Profil yükleme hatası: $e');
+    }
+
+    try {
+      istatistik = await ApiService.getIstatistik();
+    } catch (e) {
+      debugPrint('İstatistik yükleme hatası: $e');
+    }
+
+    if (mounted) {
+      setState(() {
+        _profil = profil;
+        _istatistik = istatistik;
+        _yukleniyor = false;
+      });
     }
   }
 
